@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CityList from './CityListByApi';
 
 const SearchForm = () => {
   const [origin, setOrigin] = useState('');
@@ -14,16 +15,10 @@ const SearchForm = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    // aca se deberia llamar a otra pagina o componente que tenga los resultados de la busqueda 
+    // Aquí puedes manejar la lógica para realizar la búsqueda de vuelos con las ciudades seleccionadas.
   };
 
-  const cities = [
-    'Ciudad A',
-    'Ciudad B',
-    'Ciudad C',
-    'Ciudad D',
-    // En lugar de estas ciudades deberiamos obtener las ciudades de la API, no se si se tendrian que obtener aca o este componente deberia recibirlas
-  ];
+  const [origins, destinations] = CityList();
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center">
@@ -39,7 +34,7 @@ const SearchForm = () => {
             className="border text-gray-600 border-gray-300 rounded-lg px-4 py-2"
           >
             <option value="">Selecciona una ciudad</option>
-            {cities.map(city => (
+            {origins.map(city => (
               <option key={city} value={city}>
                 {city}
               </option>
@@ -58,7 +53,7 @@ const SearchForm = () => {
             className="border text-gray-600 border-gray-300 rounded-lg px-4 py-2"
           >
             <option value="">Selecciona una ciudad</option>
-            {cities.map(city => (
+            {destinations.map(city => (
               <option key={city} value={city}>
                 {city}
               </option>

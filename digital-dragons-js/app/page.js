@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import SearchForm from '../components/SearchForm';
 
+
 export default function Home() {
   const [showSearchForm, setShowSearchForm] = useState(false);
 
