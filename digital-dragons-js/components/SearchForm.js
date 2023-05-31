@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CityList from './CityListByApi';
 
-const SearchForm = () => {
+const SearchForm = ({ setFlights }) => {
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
 
@@ -16,6 +16,32 @@ const SearchForm = () => {
   const handleSubmit = event => {
     event.preventDefault();
     // Aquí puedes manejar la lógica para realizar la búsqueda de vuelos con las ciudades seleccionadas.
+    // En lugar de la lógica de búsqueda, simplemente estableceré algunos vuelos de ejemplo aquí:
+    const flights = [
+      {
+        id: 1,
+        origin: origin,
+        destination: destination,
+        departureTime: '2023-10-10 12:00:00',
+        arrivalTime: '2023-10-11 12:00:00',
+        availableSeats: 100,
+        price: 50000,
+        airline: 'Aerolinea Ejemplo',
+      },
+      {
+        id: 2,
+        origin: origin,
+        destination: destination,
+        departureTime: '2023-10-10 12:00:00',
+        arrivalTime: '2023-10-11 12:00:00',
+        availableSeats: 100,
+        price: 50000,
+        airline: 'Aerolinea Ejemplo',
+      },
+      // Agrega más objetos de vuelo según sea necesario
+    ];
+
+    setFlights(flights);
   };
 
   const [origins, destinations] = CityList();
