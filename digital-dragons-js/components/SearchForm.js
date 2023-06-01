@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+// SearchForm.js
+import React, { useState, useEffect } from 'react';
 import CityList from './CityListByApi';
+import FlightListByApi from './FlightListByApi.js';
 
 const SearchForm = ({ setFlights }) => {
   const [origin, setOrigin] = useState('');
@@ -12,6 +14,15 @@ const SearchForm = ({ setFlights }) => {
   const handleDestinationChange = event => {
     setDestination(event.target.value);
   };
+
+  useEffect(() => {
+    // Llama a FlightListByApi desde aquí para obtener los vuelos
+    const fetchFlightsData = async () => {
+      await FlightListByApi({ setFlights });
+    };
+
+    fetchFlightsData();
+  }, [setFlights]);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -40,7 +51,7 @@ const SearchForm = ({ setFlights }) => {
       },
       // Agrega más objetos de vuelo según sea necesario
     ];
-
+    //setFlights(FlightListByApi({ origin, destination }));
     setFlights(flights);
   };
 
@@ -48,7 +59,7 @@ const SearchForm = ({ setFlights }) => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center">
-      <div className="flex">
+      <div className="flex page-container">
         <div className="mr-4">
           <label htmlFor="origin" className="text-lg font-medium mb-2 text-black">
             Ciudad de origen:

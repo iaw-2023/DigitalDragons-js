@@ -25,3 +25,7 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.page-container {
+  background-color: #ffffff; /* Blanco (#ffffff) */
+}

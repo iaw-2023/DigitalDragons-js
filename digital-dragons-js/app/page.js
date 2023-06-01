@@ -13,7 +13,7 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-gray-100 h-screen">
+    <div className="page-container bg-gray-100 h-screen">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div className="py-8">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight text-center">
