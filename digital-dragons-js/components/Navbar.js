@@ -14,7 +14,7 @@ const Navbar = () => {
             <a href="#" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
               Inicio
             </a>
-            <a href="#" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
+            <a href="/reservas" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
               Reservas
             </a>
             <a href="#" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
