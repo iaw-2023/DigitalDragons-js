@@ -17,6 +17,7 @@ const FlightList = ({ flights }) => {
     return daysUntilDeparture;
   };
 
+
   const getFlightDuration = (departureDate, arrivalDate) => {
     const departure = new Date(departureDate);
     const arrival = new Date(arrivalDate);
@@ -25,7 +26,7 @@ const FlightList = ({ flights }) => {
     const minutes = Math.floor((duration / (1000 * 60)) % 60);
     return `${hours}h ${minutes}m`;
   };
-
+  
   return (
     <div className="page-container">
       {flights.length > 0 ? (
@@ -51,10 +52,6 @@ const FlightList = ({ flights }) => {
               <div>
                 <span className="font-semibold">Duración del vuelo: </span>
                 {getFlightDuration(flight.departureTime, flight.arrivalTime)}
-              </div>
-              <div>
-                <span className="font-semibold">Asientos disponibles: </span>
-                {flight.availableSeats}
               </div>
               <div>
                 <span className="font-semibold">Precio: </span>

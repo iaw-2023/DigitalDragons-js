@@ -2,13 +2,16 @@
 import React, { useState } from 'react';
 import SearchForm from '../components/SearchForm';
 import FlightList from '../components/FlightList';
+import FlightListByApi from '../components/FlightListByApi';
 
 export default function Home() {
   const [showSearchForm, setShowSearchForm] = useState(false);
-  const [flights, setFlights] = useState([]);
+  const [citys, setCitys] = useState([]);
+  const [vuelos, setFlights] = useState([]);
 
   const handleShowSearchForm = () => {
     setShowSearchForm(true);
+    setCitys([]);
     setFlights([]);
   };
 
@@ -31,11 +34,16 @@ export default function Home() {
                 Ver vuelos disponibles
               </button>
             ) : (
-              <SearchForm setFlights={setFlights} />
+              <div>
+                <SearchForm setCitys={setCitys} />
+              </div>
             )}
           </div>
-          {flights.length}
-          {flights.length > 0 && <FlightList flights={flights} />}
+          {citys.length > 0 && <FlightListByApi origin={citys[0]} destination={citys[1]} />}
+          {/* {citys.length > 0 && <FlightList flights={ <FlightListByApi origin={citys.origin} destination={citys.destination} />} />} */}
+          {/* {vuelos.length} */}
+          
+          {/* {vuelos.length > 0 && <FlightList vuelos={flights} />} */}
         </div>
       </div>
     </div>
