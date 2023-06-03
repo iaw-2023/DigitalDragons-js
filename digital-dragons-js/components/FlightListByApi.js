@@ -11,9 +11,27 @@ const FlightListByApi = ({ origin, destination }) => {
         const allFlights = response.data;
 
         // Filtrar los vuelos por ciudad de origen y destino
-        const filteredFlights = allFlights.filter(flight => flight.origen === origin && flight.destino === destination);
+        const filteredFlights = allFlights.filter(
+          (flight) => flight.origen === origin && flight.destino === destination
+        );
 
-        setFlights(filteredFlights);
+        const updatedFlights = [];
+
+        for (const flight of filteredFlights) {
+          try {
+            const aerolineaResponse = await axios.get(`https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/aerolineas/${flight.aerolinea_id}`);
+            const aerolineaData = aerolineaResponse.data;
+            const updatedFlight = {
+              ...flight,
+              aerolinea_nombre: aerolineaData.nombre
+            };
+            updatedFlights.push(updatedFlight);
+          } catch (error) {
+            console.error(`Error al obtener la aerolínea con ID ${flight.aerolinea_id}`, error);
+          }
+        }
+
+        setFlights(updatedFlights);
       } catch (error) {
         console.error('Error al obtener los vuelos:', error);
       }
@@ -46,13 +64,6 @@ const FlightListByApi = ({ origin, destination }) => {
     const minutes = Math.floor((duration / (1000 * 60)) % 60);
     return `${hours}h ${minutes}m`;
   };
-  
- 
-  const handleReserveClick = (flightId) => {
-    // Aquí puedes realizar acciones adicionales al hacer clic en el botón de reserva
-    // Por ejemplo, redireccionar a una página de reserva con el ID del vuelo seleccionado
-    console.log('Reservar vuelo:', flightId);
-  };
 
   return (
     <div className="page-container text-black">
@@ -63,17 +74,7 @@ const FlightListByApi = ({ origin, destination }) => {
               key={flight.id}
               className="bg-blue-100 text-blue-500 shadow-md rounded-lg p-6 flex flex-col justify-between"
             >
-              <h3 className="text-xl font-semibold mb-2">Aerolinea:{flight.id}</h3>
-              <div>
-                {origin}
-                
-                <span className="font-semibold">Origen: </span>
-                {flight.origen}
-              </div>
-              <div>
-                <span className="font-semibold">Destino: </span>
-                {flight.destino}
-              </div>
+              <h3 className="text-xl font-semibold mb-2">{flight.aerolinea_nombre}</h3>
               <div>
                 <span className="font-semibold">Días hasta la salida: </span>
                 {getDaysUntilDeparture(flight.fecha_salida)}
@@ -83,8 +84,8 @@ const FlightListByApi = ({ origin, destination }) => {
                 {getFlightDuration(flight.fecha_salida, flight.fecha_llegada)}
               </div>
               <div>
-                <span className="font-semibold">Precio: </span>
-                {flight.precio}
+                <span className="font-semibold">Desde: </span>
+                ${flight.precio} 
               </div>
               <a
               href={`/flight/${flight.id}`}
