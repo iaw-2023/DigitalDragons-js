@@ -47,6 +47,13 @@ const FlightListByApi = ({ origin, destination }) => {
     return `${hours}h ${minutes}m`;
   };
   
+ 
+  const handleReserveClick = (flightId) => {
+    // Aquí puedes realizar acciones adicionales al hacer clic en el botón de reserva
+    // Por ejemplo, redireccionar a una página de reserva con el ID del vuelo seleccionado
+    console.log('Reservar vuelo:', flightId);
+  };
+
   return (
     <div className="page-container text-black">
       {flights.length > 0 ? (
@@ -79,6 +86,14 @@ const FlightListByApi = ({ origin, destination }) => {
                 <span className="font-semibold">Precio: </span>
                 {flight.precio}
               </div>
+              <a
+              href={`/flight/${flight.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border-2 border-blue-500 rounded-lg px-4 py-2 mt-4 hover:bg-blue-500 hover:text-white text-center"
+            >
+              Realizar reserva
+            </a>
             </div>
           ))}
         </div>
