@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const FlightPage = ({ params }) => {
   const { flightId } = params;
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [flightData, setFlightData] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -59,7 +59,6 @@ const FlightPage = ({ params }) => {
       if(selectedCategory == "Business"){
         flightPrice = flightData.precio * 1.7;
       }
-
       
       const reservationData = {
         categoria: selectedCategory,
@@ -90,9 +89,11 @@ const FlightPage = ({ params }) => {
       alert("Lamentamos informarle que se acaba de ocupar el ultimo asiento disponible para este vuelo :(")
     }
   };
+
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
+
   if (!flightData) {
     return <div className="page-container bg-gray-100 h-screen" >
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
@@ -221,12 +222,14 @@ const FlightPage = ({ params }) => {
                     required
                   />
                 </label>
-              <button
-                type="submit"
-                className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-              >
-                Enviar
-              </button>
+                <button
+        disabled={!selectedCategory}
+        id="btnRealizarReserva"
+        type="submit"
+        className={`mt-4 ${selectedCategory ? 'border-2 border-blue-500 hover:bg-blue-500 hover:text-white text-blue-500' : 'border-2 border-black'} font-bold py-2 px-4 rounded`}
+      >
+       {selectedCategory ? "Realizar Reserva" : "Seleccione una categoria "}
+      </button>
             </form>
           </div>
         </div>
