@@ -48,7 +48,7 @@ const FlightPage = ({ params }) => {
     const reservationData = {
       categoria: selectedCategory,
       numero_asiento: 1, // Completa con el número de asiento deseado
-      precio: flightPrice, // Utiliza el precio del vuelo obtenido
+      precio: flightPrice, 
       vuelo_id: flightId,
       cliente_id: 1, // Completa con el ID del cliente
     };
@@ -59,13 +59,7 @@ const FlightPage = ({ params }) => {
         'https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/reservas',
         reservationData
       );
-
-      console.log('Reserva registrada:', response.data);
-
-      // Aquí puedes realizar cualquier acción adicional después de registrar la reserva
-
-      // Reiniciar los datos del formulario
-      setFormData({ name: '', email: '' });
+      alert('Reserva registrada:');
     } catch (error) {
       console.error('Error al registrar la reserva:', error);
     }

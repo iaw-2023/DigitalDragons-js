@@ -1,7 +1,6 @@
 'use client'
 import React, { useState } from 'react';
 import SearchForm from '../components/SearchForm';
-import FlightList from '../components/FlightList';
 import FlightListByApi from '../components/FlightListByApi';
 
 export default function Home() {
@@ -40,12 +39,10 @@ export default function Home() {
             )}
           </div>
           {citys.length > 0 && <FlightListByApi origin={citys[0]} destination={citys[1]} />}
-          {/* {citys.length > 0 && <FlightList flights={ <FlightListByApi origin={citys.origin} destination={citys.destination} />} />} */}
-          {/* {vuelos.length} */}
           
-          {/* {vuelos.length > 0 && <FlightList vuelos={flights} />} */}
         </div>
       </div>
     </div>
+    
   );
 };
