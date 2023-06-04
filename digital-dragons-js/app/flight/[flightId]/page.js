@@ -76,10 +76,12 @@ const FlightPage = ({ params }) => {
           reservationData
         );
         const alertMessage = `Reserva registrada:
-          Aerolínea: ${flightData.aerolinea_id}
+          Origen: ${flightData.origen}
           Destino: ${flightData.destino}
+          Categorioa: ${selectedCategory}
           Número de asiento: ${flightData.asientos_disponibles}
-          Fecha de salida: ${flightData.fecha_salida}`;
+          Fecha de salida: ${flightData.fecha_salida}
+          Precio: $${flightPrice}`;
         alert(alertMessage);
       } catch (error) {
         console.error('Error al registrar la reserva:', error);
