@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Dragon Travels',
+  title: 'Digital Travels',
   description: 'Aplicacion de reserva de vuelos',
 }
 
