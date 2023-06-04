@@ -12,7 +12,7 @@ const FlightListByApi = ({ origin, destination }) => {
 
         // Filtrar los vuelos por ciudad de origen y destino
         const filteredFlights = allFlights.filter(
-          (flight) => flight.origen === origin && flight.destino === destination
+          (flight) => flight.origen === origin && flight.destino === destination && flight.asientos_disponibles > 0
         );
 
         const updatedFlights = [];
@@ -82,6 +82,10 @@ const FlightListByApi = ({ origin, destination }) => {
               <div>
                 <span className="font-semibold">Duración del vuelo: </span>
                 {getFlightDuration(flight.fecha_salida, flight.fecha_llegada)}
+              </div>
+              <div>
+                <span className="font-semibold">Asientos Disponibles: </span>
+                {flight.asientos_disponibles} 
               </div>
               <div>
                 <span className="font-semibold">Desde: </span>

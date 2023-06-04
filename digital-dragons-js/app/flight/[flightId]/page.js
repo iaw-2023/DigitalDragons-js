@@ -30,38 +30,62 @@ const FlightPage = ({ params }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Obtener los datos del formulario
-    const { name, email } = formData;
+    if(flightData.asientos_disponibles > 0){ 
+      try {
+        const updatedFlightData = {
+          ...flightData,
+          asientos_disponibles: flightData.asientos_disponibles - 1
+        };
 
-    // Crear el objeto de reserva
-    var flightPrice = flightData.precio * 2.1;
-    if(selectedCategory == "Economica"){
-      var flightPrice = flightData.precio;
-    }
-    if(selectedCategory == "Premium Economy"){
-      var flightPrice = flightData.precio * 1.3;
-    }
-    if(selectedCategory == "Business"){
-      var flightPrice = flightData.precio * 1.7;
-    }
-    const reservationData = {
-      categoria: selectedCategory,
-      numero_asiento: 1, // Completa con el número de asiento deseado
-      precio: flightPrice, 
-      vuelo_id: flightId,
-      cliente_id: 1, // Completa con el ID del cliente
-    };
+        await axios.put(`https://digital-dragons-laravel-qq2pnhaij-digitaldragons.vercel.app/rest/vuelos/${flightId}`, updatedFlightData);
 
-    try {
-      // Realizar la solicitud POST para registrar la reserva
-      const response = await axios.post(
-        'https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/reservas',
-        reservationData
-      );
-      alert('Reserva registrada:');
-    } catch (error) {
-      console.error('Error al registrar la reserva:', error);
+        setFlightData(updatedFlightData);
+      } catch (error) {
+        console.error('Error updating flight data:', error);
+      }
+      
+      
+      // Obtener los datos del formulario
+      const { name, email } = formData;
+
+      // Crear el objeto de reserva
+      var flightPrice = flightData.precio * 2.1;
+      if(selectedCategory == "Economica"){
+        flightPrice = flightData.precio;
+      }
+      if(selectedCategory == "Premium Economy"){
+        flightPrice = flightData.precio * 1.3;
+      }
+      if(selectedCategory == "Business"){
+        flightPrice = flightData.precio * 1.7;
+      }
+
+      
+      const reservationData = {
+        categoria: selectedCategory,
+        numero_asiento: flightData.asientos_disponibles, // Completa con el número de asiento deseado
+        precio: flightPrice, 
+        vuelo_id: flightId,
+        cliente_id: 1, // Completa con el ID del cliente
+      };
+
+      try {
+        // Realizar la solicitud POST para registrar la reserva
+        const response = await axios.post(
+          'https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/reservas',
+          reservationData
+        );
+        const alertMessage = `Reserva registrada:
+          Aerolínea: ${flightData.aerolinea_id}
+          Destino: ${flightData.destino}
+          Número de asiento: ${flightData.asientos_disponibles}
+          Fecha de salida: ${flightData.fecha_salida}`;
+        alert(alertMessage);
+      } catch (error) {
+        console.error('Error al registrar la reserva:', error);
+      }
+    }else{
+      alert("Lamentamos informarle que se acaba de ocupar el ultimo asiento disponible para este vuelo :(")
     }
   };
   const handleCategoryChange = (category) => {
