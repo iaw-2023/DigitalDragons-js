@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import CardReservas from '../../components/CardReservas';
+import CardReservasByApi from '../../components/CardReservasByApi';
 
 
 
@@ -14,7 +14,7 @@ const reservas = () => {
       <div>
       
       
-        <CardReservas />
+        <CardReservasByApi />
       
     </div>
     );

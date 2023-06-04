@@ -7,7 +7,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <a href="/" className="text-white font-semibold text-lg">
-              Digital Travels
+              Dragon Travels
             </a>
           </div>
           <div className="flex">
