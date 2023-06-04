@@ -6,7 +6,7 @@ const AboutUsPage = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div className="py-8">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight text-center">
-            Somos Digital Dragons
+            Somos Dragon Travels
           </h1>
           <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto text-center">
             Somos una compañía dedicada a brindar experiencias de vuelo únicas y memorables.

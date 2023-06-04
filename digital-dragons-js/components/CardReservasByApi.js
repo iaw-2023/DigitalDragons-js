@@ -8,6 +8,7 @@ const CardReservasByApi = () => {
   const reservationsPerPage = 5;
   const pagesVisited = pageNumber * reservationsPerPage;
 
+
   useEffect(() => {
     const fetchReservas = async () => {
       try {
@@ -22,7 +23,7 @@ const CardReservasByApi = () => {
 
             return {
               ...reserva,
-              categoria: vueloData.categoria,
+              
               numeroAsiento: vueloData.numero_asiento,
               precio: vueloData.precio
             };
@@ -37,6 +38,10 @@ const CardReservasByApi = () => {
 
     fetchReservas();
   }, []);
+
+  if (reservas.length === 0) {
+    return <div>Cargando datos...</div>;
+  }
 
   const pageCount = Math.ceil(reservas.length / reservationsPerPage);
 
@@ -77,10 +82,13 @@ const CardReservasByApi = () => {
                         {reserva.vuelo_id}
                       </div>
                       <button
-                        className="px-4 py-2 text-base font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg"
+                        //onClick={() => handleShowFlightDetails(reserva)} // Llama a la función handleShowFlightDetails pasando la reserva como argumento
+                        //className="px-4 py-2 text-base font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg"
+                        //Ver Datos del Vuelo
                       >
-                        Ver Datos del Vuelo
+                        
                       </button>
+
                     </div>
                   </div>
                 ))}
@@ -106,6 +114,12 @@ const CardReservasByApi = () => {
             )}
           </div>
         </div>
+
+        
+
+
+
+
       </div>
     </div>
   );
