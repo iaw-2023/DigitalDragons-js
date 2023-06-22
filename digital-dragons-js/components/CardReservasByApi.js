@@ -2,45 +2,66 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
-const CardReservasByApi = () => {
+const CardReservasByApi = ({ userId }) => {
   const [reservas, setReservas] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const reservationsPerPage = 5;
   const pagesVisited = pageNumber * reservationsPerPage;
 
-
   useEffect(() => {
     const fetchReservas = async () => {
       try {
-        const response = await axios.get('https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/reservas');
+        const response = await axios.get(`https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/reservas`);
         const allReservas = response.data;
 
+        // Filtrar las reservas por id del cliente
+        const filteredReservas = allReservas.filter(
+          (reserva) => reserva.cliente_id === userId
+        );
+
+        const updatedReservas = [];
+
+        for (const reserva of filteredReservas) {
+          try {
+            const clienteResponse = await axios.get(`https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/clientes/${reserva.cliente_id}`);
+            const clienteData = clienteResponse.data;
+            const updatedReserva = {
+              ...reserva,
+              cliente_id: clienteData.id
+            };
+            updatedReservas.push(updatedReserva);
+          } catch (error) {
+            console.error(`Error al obtener el cliente con ID ${reserva.cliente_id}`, error);
+          }
+        }
+
         // Actualizar las reservas con datos adicionales
-        const updatedReservas = await Promise.all(
-          allReservas.map(async (reserva) => {
+        const updatedReservasDatosAdicionales = await Promise.all(
+          filteredReservas.map(async (reserva) => {
             const vueloResponse = await axios.get(`https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/vuelos/${reserva.vuelo_id}`);
             const vueloData = vueloResponse.data;
 
             return {
               ...reserva,
-              
               numeroAsiento: vueloData.numero_asiento,
               precio: vueloData.precio
             };
           })
         );
 
-        setReservas(updatedReservas);
+        setReservas(updatedReservasDatosAdicionales);
       } catch (error) {
         console.error('Error al obtener las reservas:', error);
       }
     };
 
     fetchReservas();
-  }, []);
+  }, [userId]);
 
   if (reservas.length === 0) {
-    return <div>Cargando datos...</div>;
+    return <div>
+      <h1>Cargando datos...</h1> 
+      </div>;
   }
 
   const pageCount = Math.ceil(reservas.length / reservationsPerPage);
@@ -88,11 +109,10 @@ const CardReservasByApi = () => {
                       >
                         
                       </button>
-
                     </div>
                   </div>
                 ))}
-                 <div className="mt-4">
+                <div className="mt-4">
                   <ReactPaginate
                     previousLabel={'Anterior'}
                     nextLabel={'Siguiente'}
@@ -114,12 +134,6 @@ const CardReservasByApi = () => {
             )}
           </div>
         </div>
-
-        
-
-
-
-
       </div>
     </div>
   );
