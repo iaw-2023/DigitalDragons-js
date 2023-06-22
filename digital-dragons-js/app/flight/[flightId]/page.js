@@ -1,16 +1,34 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import Checkout from '../../../components/Checkout';
+
+
+
+//import Head from 'next/head';
+
+//import CardPaymentBrick from '../../components/CardPaymentBrick'
+
+/*<Head>
+  <script src="https://sdk.mercadopago.com/js/v2"></script>
+</Head>*/
+
+
+
+
 
 const FlightPage = ({ params }) => {
   const { flightId } = params;
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [showCheckout, setShowCheckout] = useState(false);
   const [flightData, setFlightData] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
   });
   const[flightPrice,setFlightPrice]=useState(0);
+  //const [showCardPaymentForm, setShowCardPaymentForm] = useState(false);
 
   useEffect(() => {
     const fetchFlightData = async () => {
@@ -24,6 +42,20 @@ const FlightPage = ({ params }) => {
         console.error('Error fetching flight data:', error);
       }
     };
+
+    /*const initMercadoPago = () => {
+      const publicKey = 'TEST-4aab04bf-a4fb-4724-881f-53f0ffc5a971'; // Reemplaza con tu clave pública de sandbox
+  
+      Mercadopago.setPublishableKey(publicKey);
+      Mercadopago.setPaymentConfiguration({
+        sandbox: true
+      });
+
+      //const bricksBuilder = mp.bricks();
+    }*/
+  
+    // Llamadas a Mercadopago
+    //initMercadoPago();
 
     fetchFlightData();
   }, [flightId]);
@@ -68,20 +100,90 @@ const FlightPage = ({ params }) => {
         cliente_id: 1, // Completa con el ID del cliente
       };
 
+      /*function initMercadoPago() {
+        const publicKey = 'TEST-4aab04bf-a4fb-4724-881f-53f0ffc5a971'; // Reemplaza con tu clave pública de sandbox
+      
+        Mercadopago.setPublishableKey(publicKey);
+        Mercadopago.setPaymentConfiguration({
+          sandbox: true
+        });
+      }*/
+      
+      /*function iniciarPagoConTarjeta() {
+        // Crea el objeto de preferencia de pago con los detalles de la reserva y el precio
+        const preference = {
+          items: [
+            {
+              title: 'Reserva de vuelo',
+              quantity: 1,
+              currency_id: 'ARS',
+              unit_price: parseFloat(flightPrice),
+            },
+          ],
+        };
+      
+        // Crea un formulario de pago con el método de pago con tarjeta (Checkout Bricks - Card Payment Brick)
+        Mercadopago.createToken({
+          cardNumber: 'NUMERO_DE_TARJETA',
+          cardExpirationMonth: 'MES_DE_EXPIRACION',
+          cardExpirationYear: 'AÑO_DE_EXPIRACION',
+          cardholderName: 'NOMBRE_DEL_TITULAR',
+          cardholderIdentification: {
+            type: 'DNI',
+            number: 'NUMERO_DE_IDENTIFICACION',
+          },
+          cardCVV: 'CVV',
+        }, (status, response) => {
+          if (status === 200) {
+            setCardToken(response.id);
+    
+            // Aquí puedes realizar la llamada a tu servidor para procesar el pago con el token obtenido
+            // y realizar las acciones necesarias después de completar el pago exitosamente.
+          } else {
+            // Manejo de errores
+          }
+        });
+      }*/
+      
+
       try {
         // Realizar la solicitud POST para registrar la reserva
         const response = await axios.post(
           'https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/reservas',
           reservationData
         );
-        const alertMessage = `Reserva registrada:
-          Origen: ${flightData.origen}
-          Destino: ${flightData.destino}
-          Categorioa: ${selectedCategory}
-          Número de asiento: ${flightData.asientos_disponibles}
-          Fecha de salida: ${flightData.fecha_salida}
-          Precio: $${flightPrice}`;
-        alert(alertMessage);
+        //const alertMessage = `Reserva registrada:
+        //  Origen: ${flightData.origen}
+        //  Destino: ${flightData.destino}
+        //  Categoría: ${selectedCategory}
+        //  Número de asiento: ${flightData.asientos_disponibles}
+        //  Fecha de salida: ${flightData.fecha_salida}
+        //  Precio: $${flightPrice}`;
+          Swal.fire({
+            title: 'Reserva registrada',
+            html: `
+              Origen: ${flightData.origen}<br/>
+              Destino: ${flightData.destino}<br/>
+              Categoría: ${selectedCategory}<br/>
+              Número de asiento: ${flightData.asientos_disponibles}<br/>
+              Fecha de salida: ${flightData.fecha_salida}<br/>
+              Precio: $${flightPrice}`,
+            showCancelButton: true,
+            confirmButtonText: 'Ir a pagar',
+            cancelButtonText: 'Cancelar',
+          }).then((result) => {
+            if (result.isConfirmed) {
+
+              //setShowCheckout(true);
+
+              // Lógica a realizar cuando se hace clic en el botón "Aceptar"
+              //initMercadoPago(); //Inicializo el SDK de MP
+              //iniciarPagoConTarjeta();
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              // Lógica a realizar cuando se hace clic en el botón "Cancelar" o se cierra la alerta
+            }
+          });
+          
       } catch (error) {
         console.error('Error al registrar la reserva:', error);
       }
@@ -232,6 +334,7 @@ const FlightPage = ({ params }) => {
       </button>
             </form>
           </div>
+          <Checkout />
         </div>
       </div>
     </div>
