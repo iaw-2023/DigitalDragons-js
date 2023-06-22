@@ -77,13 +77,8 @@ export default function MP() {
   }, []);
 
   return (
-    <html>
-      <head>
-        <title>MercadoPago Example</title>
-      </head>
-      <body>
+
         <div id="cardPaymentBrick_container"></div>
-      </body>
-    </html>
+
   );
 }
