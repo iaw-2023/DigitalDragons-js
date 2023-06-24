@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function MP() {
   useEffect(() => {
@@ -10,6 +10,8 @@ export default function MP() {
       script.onload = initializeMercadoPago;
       document.body.appendChild(script);
     };
+
+    const [paymentResponse, setPaymentResponse] = useState(null);
 
     const initializeMercadoPago = () => {
       const mp = new window.MercadoPago('TEST-4aab04bf-a4fb-4724-881f-53f0ffc5a971', {
@@ -47,14 +49,14 @@ export default function MP() {
                   },
                   body: JSON.stringify(cardFormData)
                 })
-                  .then((response) => {
-                    // recibir el resultado del pago
-                    resolve();
-                  })
-                  .catch((error) => {
-                    // tratar respuesta de error al intentar crear el pago
-                    reject();
-                  });
+                .then((response) => response.json()) // Parsea la respuesta JSON
+                .then((data) => {
+                  setPaymentResponse(data); // Actualiza el estado con los datos de la respuesta
+                  resolve();
+                })
+                .catch((error) => {
+                  reject();
+                });
               });
             },
             onError: (error) => {
@@ -78,7 +80,18 @@ export default function MP() {
 
   return (
 
+    <div>
         <div id="cardPaymentBrick_container"></div>
+      
+        {paymentResponse && (
+          <div>
+            <h2>Pago realizado con éxito</h2>
+            <p>ID de pago: {paymentResponse.id}</p>
+            <p>Estado: {paymentResponse.status}</p>
+            <p>Detalle de estado: {paymentResponse.status_detail}</p>
+          </div>
+        )}
+    </div>
 
   );
 }
