@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 const AboutUsPage = () => {
   return (
@@ -16,7 +17,7 @@ const AboutUsPage = () => {
             <h2 className="text-2xl font-bold mb-4">Main Dragons:</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-white rounded-lg shadow-lg p-4 flex items-center">
-                <img
+                <Image
                   src="https://i.ibb.co/kM8TT5V/Aldana-Daniela-Case.jpg"
                   alt="Foto de Aldana Daniela Casé"
                   className="w-12 h-12 rounded-full mr-4"
@@ -27,7 +28,7 @@ const AboutUsPage = () => {
                 </div>
               </div>
               <div className="bg-white rounded-lg shadow-lg p-4 flex items-center">
-                <img
+                <Image
                   src="https://i.ibb.co/028J5tv/Ger-nimo-Le-Lan-Toussaint-profile-image.jpg"
                   alt="Foto de Gerónimo Le Lan Toussaint"
                   className="w-12 h-12 rounded-full mr-4"

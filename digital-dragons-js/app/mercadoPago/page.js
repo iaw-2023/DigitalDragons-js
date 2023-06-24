@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 
 export default function MP() {
   useEffect(() => {
+    
+
     const loadMercadoPagoScript = () => {
       const script = document.createElement('script');
       script.src = 'https://sdk.mercadopago.com/js/v2';
@@ -11,7 +13,7 @@ export default function MP() {
       document.body.appendChild(script);
     };
 
-    const [paymentResponse, setPaymentResponse] = useState(null);
+    
 
     const initializeMercadoPago = () => {
       const mp = new window.MercadoPago('TEST-4aab04bf-a4fb-4724-881f-53f0ffc5a971', {
@@ -19,6 +21,7 @@ export default function MP() {
       });
 
       const bricksBuilder = mp.bricks();
+      
       const renderCardPaymentBrick = async (bricksBuilder) => {
         const settings = {
           initialization: {
@@ -38,6 +41,7 @@ export default function MP() {
             onReady: () => {
               // callback llamado cuando Brick esté listo
             },
+            
             onSubmit: (cardFormData) => {
               //  callback llamado cuando el usuario haga clic en el botón enviar los datos
               //  ejemplo de envío de los datos recolectados por el Brick a su servidor
@@ -64,7 +68,7 @@ export default function MP() {
             }
           }
         };
-
+        
         window.cardPaymentBrickController = bricksBuilder
           .create('cardPayment', 'cardPaymentBrick_container', settings)
           .catch((error) => {
@@ -77,7 +81,7 @@ export default function MP() {
 
     loadMercadoPagoScript();
   }, []);
-
+  const [paymentResponse, setPaymentResponse] = useState(null);
   return (
 
     <div>

@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import LoginForm from './LoginForm';
 import LogoutConfirmation from './LogoutConfirmation';
 
@@ -21,7 +22,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <a href="/" className="text-white font-semibold text-lg">
               <div className="flex items-center">
-                <img src="https://i.ibb.co/ZMFDHw4/logo2.png" alt="Logo" className="h-12 w-auto" />
+                <Image src="https://i.ibb.co/ZMFDHw4/logo2.png" alt="Logo" className="h-12 w-auto" />
               </div>
             </a>
           </div>
