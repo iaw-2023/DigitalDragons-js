@@ -1,14 +1,18 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LoginForm from './LoginForm';
+import LogoutConfirmation from './LogoutConfirmation';
 
 const Navbar = () => {
-  const [showLoginForm, setShowLoginForm] = useState(true);
-  
+  const [userData, setUserData] = useState(null);
 
-  const handleLoginClick = () => {
-    setShowLoginForm(false);
-  };
+  useEffect(() => {
+    const userDataString = localStorage.getItem('userData');
+    if (userDataString) {
+      const parsedUserData = JSON.parse(userDataString);
+      setUserData(parsedUserData);
+    }
+  }, []);
 
   return (
     <nav className="bg-blue-500">
@@ -31,11 +35,15 @@ const Navbar = () => {
             <a href="/aboutUs" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
               About Us
             </a>
-            <LoginForm />
+            {userData ? (
+    
+                <LogoutConfirmation />
+            ) : (
+              <LoginForm />
+            )}
           </div>
         </div>
       </div>
-      {/* {showLoginForm && <LoginForm />} */}
     </nav>
   );
 };

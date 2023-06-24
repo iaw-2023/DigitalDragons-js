@@ -2,19 +2,20 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
 const LoginForm = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    alert("Username: " + username + " Password: " + password);
+    let username = document.querySelector('#username').value;
+    let password = document.querySelector('#password').value;
     fetch(`https://digital-dragons-laravel.vercel.app/rest/clientes/${username}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.clave === password) {
+          localStorage.setItem('userData', JSON.stringify(data));
           Swal.fire('Success', 'Login successful', 'success');
         } else {
           Swal.fire('Error', 'Invalid username or password', 'error');
         }
+        
       });
   };
 
@@ -27,11 +28,6 @@ const LoginForm = () => {
       `,
       confirmButtonText: 'Login',
       preConfirm: () => {
-        // let username = document.getElementById('username').value;
-        // let password = document.getElementById('password').value;
-        setUsername(username);
-        setPassword(password);
-        //handleLogin(username,password);
         handleLogin();
       },
     });
