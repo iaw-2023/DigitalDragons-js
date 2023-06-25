@@ -45,8 +45,9 @@ export default function MP() {
             onSubmit: (cardFormData) => {
               //  callback llamado cuando el usuario haga clic en el botón enviar los datos
               //  ejemplo de envío de los datos recolectados por el Brick a su servidor
+              console.log("dentro de submit")
               return new Promise((resolve, reject) => {
-                fetch('/process_payment', {
+                fetch('https://digital-dragons-laravel-2kfa6phhp-digitaldragons.vercel.app/rest/process_payment', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'

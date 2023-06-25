@@ -22,7 +22,8 @@ const Navbar = () => {
           <div className="flex items-center">
             <a href="/" className="text-white font-semibold text-lg">
               <div className="flex items-center">
-                <Image src="https://i.ibb.co/ZMFDHw4/logo2.png" alt="Logo" className="h-12 w-auto" />
+                <Image src="https://i.ibb.co/ZMFDHw4/logo2.png" alt="Logo" className="h-12 w-auto" width={500}
+  height={200} />
               </div>
             </a>
           </div>
