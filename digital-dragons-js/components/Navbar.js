@@ -2,17 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import LoginForm from './LoginForm';
-import LogoutConfirmation from './LogoutConfirmation';
+import LogoutButton from './LogoutButton';
 
 const Navbar = () => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const userDataString = localStorage.getItem('userData');
-    if (userDataString) {
-      const parsedUserData = JSON.parse(userDataString);
-      setUserData(parsedUserData);
-    }
+    setUserData( localStorage.getItem('access_token'));
   }, []);
 
   return (
@@ -39,7 +35,7 @@ const Navbar = () => {
             </a>
             {userData ? (
     
-                <LogoutConfirmation />
+                <LogoutButton />
             ) : (
               <LoginForm />
             )}

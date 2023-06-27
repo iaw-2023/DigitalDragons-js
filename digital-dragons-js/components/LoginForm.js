@@ -2,20 +2,40 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
 const LoginForm = () => {
-
   const handleLogin = () => {
-    let username = document.querySelector('#username').value;
+    let email = document.querySelector('#email').value;
     let password = document.querySelector('#password').value;
-    fetch(`https://digital-dragons-laravel.vercel.app/rest/clientes/${username}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.clave === password) {
-          localStorage.setItem('userData', JSON.stringify(data));
-          Swal.fire('Success', 'Login successful', 'success');
+
+    // Realizar la solicitud de login a la API
+    fetch('https://digital-dragons-laravel-git-correciones-y-58fd17-digitaldragons.vercel.app/rest/clientLogin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        clave: password,
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Manejar la respuesta de la API
+        if (data.message === 'Login successful') {
+          // El login fue exitoso
+          let accessToken = data.access_token;
+          // Guardar el token de acceso en el almacenamiento local (por ejemplo, en localStorage)
+          localStorage.setItem('access_token', accessToken);
+          // Recargar la página actual
+          window.location.reload();
         } else {
-          Swal.fire('Error', 'Invalid username or password', 'error');
+          // El login falló
+          let errorMessage = data.message;
+          // Mostrar mensaje de error al usuario, etc.
         }
-        
+      })
+      .catch(error => {
+        // Manejar errores de conexión o cualquier otro error
+        console.error('Error:', error);
       });
   };
 
@@ -23,7 +43,7 @@ const LoginForm = () => {
     Swal.fire({
       title: 'Login',
       html: `
-        <input type="text" id="username" class="swal2-input" placeholder="Username">
+        <input type="text" id="email" class="swal2-input" placeholder="email">
         <input type="password" id="password" class="swal2-input" placeholder="Password">
       `,
       confirmButtonText: 'Login',
@@ -35,7 +55,6 @@ const LoginForm = () => {
 
   return (
     <a
-      href="#"
       className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium"
       onClick={showLoginForm}
     >
