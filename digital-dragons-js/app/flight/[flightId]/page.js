@@ -2,23 +2,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import Checkout from '../../../components/Checkout';
+import { useRouter } from 'next/navigation';
 
-
-
-//import Head from 'next/head';
-
-//import CardPaymentBrick from '../../components/CardPaymentBrick'
-
-/*<Head>
-  <script src="https://sdk.mercadopago.com/js/v2"></script>
-</Head>*/
-
-
+//import Checkout from '../../../components/Checkout';
+//import FlightPageContent from '../../../components/FlightPageContent';
 
 
 
 const FlightPage = ({ params }) => {
+  //const navigate = useNavigate();
+  const router = useRouter();
+  const handlePaymentButtonClick = () => {
+    router.push('/mercadoPago'); // Ruta a la página de pago
+  };
   const { flightId } = params;
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showCheckout, setShowCheckout] = useState(false);
@@ -173,12 +169,8 @@ const FlightPage = ({ params }) => {
             cancelButtonText: 'Cancelar',
           }).then((result) => {
             if (result.isConfirmed) {
-
-              //setShowCheckout(true);
-
-              // Lógica a realizar cuando se hace clic en el botón "Aceptar"
-              //initMercadoPago(); //Inicializo el SDK de MP
-              //iniciarPagoConTarjeta();
+              router.push('/mercadoPago');
+              
             } else if (result.dismiss === Swal.DismissReason.cancel) {
               // Lógica a realizar cuando se hace clic en el botón "Cancelar" o se cierra la alerta
             }
@@ -195,6 +187,8 @@ const FlightPage = ({ params }) => {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
+
+  
 
   if (!flightData) {
     return <div className="page-container bg-gray-100 h-screen" >
@@ -334,9 +328,11 @@ const FlightPage = ({ params }) => {
       </button>
             </form>
           </div>
-          <Checkout />
+          
+          
         </div>
       </div>
+      
     </div>
   );
 };

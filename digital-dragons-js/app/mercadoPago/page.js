@@ -1,10 +1,16 @@
 "use client"
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+
+
+
+
 
 export default function MP() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   useEffect(() => {
     
-
+    
     const loadMercadoPagoScript = () => {
       const script = document.createElement('script');
       script.src = 'https://sdk.mercadopago.com/js/v2';
@@ -13,7 +19,7 @@ export default function MP() {
       document.body.appendChild(script);
     };
 
-    
+    //initMercadoPago('TEST-4aab04bf-a4fb-4724-881f-53f0ffc5a971');
 
     const initializeMercadoPago = () => {
       const mp = new window.MercadoPago('TEST-4aab04bf-a4fb-4724-881f-53f0ffc5a971', {
@@ -21,6 +27,8 @@ export default function MP() {
       });
 
       const bricksBuilder = mp.bricks();
+
+      
       
       const renderCardPaymentBrick = async (bricksBuilder) => {
         const settings = {
@@ -43,11 +51,12 @@ export default function MP() {
             },
             
             onSubmit: (cardFormData) => {
+              setIsSubmitting(true); // Inicia el envío de los datos del formulario
               //  callback llamado cuando el usuario haga clic en el botón enviar los datos
               //  ejemplo de envío de los datos recolectados por el Brick a su servidor
-              console.log("dentro de submit")
+              
               return new Promise((resolve, reject) => {
-                fetch('https://digital-dragons-laravel-2kfa6phhp-digitaldragons.vercel.app/rest/process_payment', {
+                fetch('https://digital-dragons-laravel-6bh4how1y-digitaldragons.vercel.app/rest/reservas', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
@@ -58,9 +67,42 @@ export default function MP() {
                 .then((data) => {
                   setPaymentResponse(data); // Actualiza el estado con los datos de la respuesta
                   resolve();
+
+                  let title = '';
+                  let icon = '';
+
+                  if (data.status == 'approved') {
+                    title = 'Pago realizado con éxito';
+                    icon = 'success';
+                  } else if (data.status == 'in_process') {
+                    title = 'Pago pendiente';
+                    icon = 'warning';
+                  } else if (data.status == 'rejected') {
+                    title = 'Pago fallido';
+                    icon = 'error';
+                  } else {
+                    title = 'Estado desconocido';
+                    icon = 'question';
+                  }
+
+                  Swal.fire({
+                    title: title,
+                    html: `
+                      ID de pago: ${data.id}
+                      Estado: ${data.status}
+                      Detalle de estado: ${data.status_detail}
+                    `,
+                    icon: icon,
+                    confirmButtonText: 'Aceptar'
+                  });
+                  setIsSubmitting(false);
+
                 })
                 .catch((error) => {
                   reject();
+                })
+                .finally(() => {
+                  //setIsSubmitting(false); // Finaliza el envío de los datos del formulario
                 });
               });
             },
@@ -81,8 +123,22 @@ export default function MP() {
     };
 
     loadMercadoPagoScript();
+
+    const destroyPaymentBrickInstance = () => {
+      if (window.paymentBrickController) {
+        window.paymentBrickController.unmount();
+      }
+    };
+
+    return () => {
+      destroyPaymentBrickInstance();
+      document.body.removeChild(script);
+    };
   }, []);
+
   const [paymentResponse, setPaymentResponse] = useState(null);
+
+
   return (
 
     <div>
@@ -90,11 +146,9 @@ export default function MP() {
       
         {paymentResponse && (
           <div>
-            <h2>Pago realizado con éxito</h2>
-            <p>ID de pago: {paymentResponse.id}</p>
-            <p>Estado: {paymentResponse.status}</p>
-            <p>Detalle de estado: {paymentResponse.status_detail}</p>
+            
           </div>
+          
         )}
     </div>
 
