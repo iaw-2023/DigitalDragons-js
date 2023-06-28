@@ -15,18 +15,14 @@ const LogoutButton = () => {
     })
       .then(response => response.json())
       .then(data => {
-        // Manejar la respuesta de la API
         if (data.message === 'Logout exitoso') {
-          // Limpiar el token de acceso del almacenamiento local
           localStorage.removeItem('access_token');
-          // Recargar la página actual
           window.location.reload();
         } else {
           // Mostrar mensaje de error, etc.
         }
       })
       .catch(error => {
-        // Manejar errores de conexión o cualquier otro error
         console.error('Error:', error);
       });
   };

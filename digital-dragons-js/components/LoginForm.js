@@ -21,14 +21,15 @@ const LoginForm = () => {
       .then(data => {
         // Manejar la respuesta de la API
         if (data.message === 'Login successful') {
+
           // El login fue exitoso
           let accessToken = data.access_token;
-          // Guardar el token de acceso en el almacenamiento local (por ejemplo, en localStorage)
           localStorage.setItem('access_token', accessToken);
-          // Recargar la página actual
+
+
           window.location.reload();
         } else {
-          // El login falló
+          Swal.fire('Login fallido', 'Mail o contraseña incorrectos', 'fail');
           let errorMessage = data.message;
           // Mostrar mensaje de error al usuario, etc.
         }
@@ -58,7 +59,7 @@ const LoginForm = () => {
       className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium"
       onClick={showLoginForm}
     >
-      Login
+      Acceder
     </a>
   );
 };

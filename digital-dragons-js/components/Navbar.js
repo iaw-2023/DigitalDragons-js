@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import LoginForm from './LoginForm';
+import RegistrationForm from './RegistrationForm';
 import LogoutButton from './LogoutButton';
 
 const Navbar = () => {
@@ -27,9 +28,14 @@ const Navbar = () => {
             <a href="/" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
               Inicio
             </a>
-            <a href="/reservas" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
-              Reservas
-            </a>
+            {userData ? (
+    
+                <a href="/reservas" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
+            Reservas
+          </a>
+        ) : ("")}
+           
+            
             <a href="/aboutUs" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
               About Us
             </a>
@@ -37,9 +43,13 @@ const Navbar = () => {
     
                 <LogoutButton />
             ) : (
-              <LoginForm />
+              <>
+                <LoginForm />
+                <RegistrationForm />  
+              </>
             )}
           </div>
+          
         </div>
       </div>
     </nav>
