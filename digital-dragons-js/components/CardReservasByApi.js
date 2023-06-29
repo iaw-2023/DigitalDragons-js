@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
-import jwt_decode from 'jsonwebtoken';
+// import jwt_decode from 'jsonwebtoken';
 
 
 const CardReservasByApi = ({ userId }) => {

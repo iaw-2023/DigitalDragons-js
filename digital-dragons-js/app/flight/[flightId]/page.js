@@ -31,9 +31,8 @@ const FlightPage = ({ params }) => {
       } catch (error) {
         console.error('Error fetching flight data:', error);
       }
-     
     };
-
+    
     const getDestinationImage = async (destinationName) => {
       try {
         const url = `https://api.pexels.com/v1/search?query=${destinationName}%20landscape&format&per_page=1&orientation=landscape&size=small`;
@@ -92,7 +91,7 @@ const FlightPage = ({ params }) => {
       const accessToken = localStorage.getItem('access_token');
       if (accessToken) {
         try {
-          const response = await axios.get('https://digital-dragons-js-git-opcionales-y-obligatorios-digitaldragons.vercel.app/rest/cliente', {
+          const response = await axios.get('https://digital-dragons-laravel-git-correciones-y-58fd17-digitaldragons.vercel.app/rest/cliente', {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
@@ -169,11 +168,12 @@ const FlightPage = ({ params }) => {
     <div className="page-container bg-gray-100 h-screen">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div >
-        <div className={backgroundImageClass} style={{ backgroundImage: `url(${imageUrl})` }}>
+        <div className={backgroundImageClass} style={{ backgroundImage: 'url(${imageUrl})' }}>
   <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight text-center text-black border-3 p-4">
     ¡Ya estás a un paso de {flightData.destino}!
   </h1>
-  <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto text-center text-white border-3 p-4">
+  <p className="mt-4 max-w-2xl text-xl text-black lg:mx-auto text-center border-3 p-4">
+  ${imageUrl}
     Selecciona la categoría de vuelo perfecta y haz de tu viaje una experiencia inolvidable
   </p>
 </div>
