@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-
+import { useRouter } from 'next/navigation';
 
 
 
@@ -21,6 +21,9 @@ export default function MP() {
       console.error('Error al registrar la reserva:', error);
     }
   }
+
+  const router = useRouter();
+
   useEffect(() => {
     
     
@@ -44,9 +47,11 @@ export default function MP() {
       
       
       const renderCardPaymentBrick = async (bricksBuilder) => {
+        const reservationData = localStorage.getItem('reservationData');
+        const precio = reservationData.data.precio;
         const settings = {
           initialization: {
-            amount: 100, // monto a ser pago
+            amount: precio, // monto a ser pago
             payer: {
               email: ''
             }
@@ -64,7 +69,7 @@ export default function MP() {
             },
             
             onSubmit: (cardFormData) => {
-              setIsSubmitting(true); // Inicia el envío de los datos del formulario
+              
               //  callback llamado cuando el usuario haga clic en el botón enviar los datos
               //  ejemplo de envío de los datos recolectados por el Brick a su servidor
               
@@ -108,8 +113,17 @@ export default function MP() {
                     `,
                     icon: icon,
                     confirmButtonText: 'Aceptar'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      //destroyPaymentBrickInstance();
+                      //document.body.removeChild(script);
+                      router.push('/');
+                      
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                      // Lógica a realizar cuando se hace clic en el botón "Cancelar" o se cierra la alerta
+                    }
                   });
-                  setIsSubmitting(false);
+                  
 
                 })
                 .catch((error) => {
@@ -138,17 +152,17 @@ export default function MP() {
 
     loadMercadoPagoScript();
 
-    const destroyPaymentBrickInstance = () => {
+    /*const destroyPaymentBrickInstance = () => {
       if (window.paymentBrickController) {
         window.paymentBrickController.unmount();
       }
     };
 
     return () => {
-      destroyPaymentBrickInstance();
-      document.body.removeChild(script);
-    };
-  }, []);
+      //destroyPaymentBrickInstance();
+      //document.body.removeChild(script);
+    };*/
+  }, [router]);
 
   const [paymentResponse, setPaymentResponse] = useState(null);
 
