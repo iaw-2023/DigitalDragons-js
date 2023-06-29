@@ -55,20 +55,6 @@ const FlightPage = ({ params }) => {
         throw error;
       }
     };
-    
-    /*const initMercadoPago = () => {
-      const publicKey = 'TEST-4aab04bf-a4fb-4724-881f-53f0ffc5a971'; // Reemplaza con tu clave pública de sandbox
-  
-      Mercadopago.setPublishableKey(publicKey);
-      Mercadopago.setPaymentConfiguration({
-        sandbox: true
-      });
-
-      //const bricksBuilder = mp.bricks();
-    }*/
-  
-    // Llamadas a Mercadopago
-    //initMercadoPago();
 
     fetchFlightData();
   }, [flightId]);
@@ -89,9 +75,6 @@ const FlightPage = ({ params }) => {
         console.error('Error updating flight data:', error);
       }
       
-      
-      // Obtener los datos del formulario
-      const { name, email } = formData;
 
       // Crear el objeto de reserva
       var flightPrice = flightData.precio * 2.1;
@@ -122,76 +105,23 @@ const FlightPage = ({ params }) => {
       }
   
       // Crear el objeto de reserva
-      // const flightPrice = calculateFlightPrice(selectedCategory, flightData.precio);
-      const reservationData = {
+      let reservationData = {
         categoria: selectedCategory,
         numero_asiento: flightData.asientos_disponibles, // Completa con el número de asiento deseado
         precio: flightPrice,
         vuelo_id: flightId,
         cliente_id: clientId, // Utilizamos el ID del cliente obtenido de la API
       };
+      localStorage.setItem('reservationData', reservationData);
 
-      /*function initMercadoPago() {
-        const publicKey = 'TEST-4aab04bf-a4fb-4724-881f-53f0ffc5a971'; // Reemplaza con tu clave pública de sandbox
-      
-        Mercadopago.setPublishableKey(publicKey);
-        Mercadopago.setPaymentConfiguration({
-          sandbox: true
-        });
-      }*/
-      
-      /*function iniciarPagoConTarjeta() {
-        // Crea el objeto de preferencia de pago con los detalles de la reserva y el precio
-        const preference = {
-          items: [
-            {
-              title: 'Reserva de vuelo',
-              quantity: 1,
-              currency_id: 'ARS',
-              unit_price: parseFloat(flightPrice),
-            },
-          ],
-        };
-      
-        // Crea un formulario de pago con el método de pago con tarjeta (Checkout Bricks - Card Payment Brick)
-        Mercadopago.createToken({
-          cardNumber: 'NUMERO_DE_TARJETA',
-          cardExpirationMonth: 'MES_DE_EXPIRACION',
-          cardExpirationYear: 'AÑO_DE_EXPIRACION',
-          cardholderName: 'NOMBRE_DEL_TITULAR',
-          cardholderIdentification: {
-            type: 'DNI',
-            number: 'NUMERO_DE_IDENTIFICACION',
-          },
-          cardCVV: 'CVV',
-        }, (status, response) => {
-          if (status === 200) {
-            setCardToken(response.id);
-    
-            // Aquí puedes realizar la llamada a tu servidor para procesar el pago con el token obtenido
-            // y realizar las acciones necesarias después de completar el pago exitosamente.
-          } else {
-            // Manejo de errores
-          }
-        });
-      }*/
-      
-
-      try {
-        // Realizar la solicitud POST para registrar la reserva
-        const response = await axios.post(
-          'https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/reservas',
-          reservationData
-        );
-        //const alertMessage = `Reserva registrada:
-        //  Origen: ${flightData.origen}
-        //  Destino: ${flightData.destino}
-        //  Categoría: ${selectedCategory}
-        //  Número de asiento: ${flightData.asientos_disponibles}
-        //  Fecha de salida: ${flightData.fecha_salida}
-        //  Precio: $${flightPrice}`;
+      // try {
+      //   // Realizar la solicitud POST para registrar la reserva
+      //   const response = await axios.post(
+      //     'https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/reservas',
+      //     reservationData
+      //   );
           Swal.fire({
-            title: 'Reserva registrada',
+            title: 'Datos de reserva',
             html: `
               Origen: ${flightData.origen}<br/>
               Destino: ${flightData.destino}<br/>
@@ -211,9 +141,9 @@ const FlightPage = ({ params }) => {
             }
           });
           
-      } catch (error) {
-        console.error('Error al registrar la reserva:', error);
-      }
+      // } catch (error) {
+      //   console.error('Error al registrar la reserva:', error);
+      // }
     }else{
       alert("Lamentamos informarle que se acaba de ocupar el ultimo asiento disponible para este vuelo :(")
     }
@@ -336,56 +266,22 @@ const FlightPage = ({ params }) => {
               </tbody>
             </table>
           </section>
-          {/*<div className="mt-10 flex justify-center text-black">
-             <form className="w-80 bg-gray-200 p-4 rounded-lg" onSubmit={handleSubmit}>
-            <label htmlFor="name" className="block mb-2">
-                  <span className="font-semibold">Nombre:</span>
-                  <input
-                    type="text"
-                    id="name"
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
-                    defaultValue="Mariano Gonzales"
-                    disabled
-                    required
-                  />
-                </label>
-                <label htmlFor="email" className="block mb-2">
-                  <span className="font-semibold">Email:</span>
-                  <input
-                    type="email"
-                    id="email"
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
-                    defaultValue="mg@gmail.com"
-                    disabled
-                    required
-                  />
-                </label>
-                <button
-        disabled={!selectedCategory}
-        id="btnRealizarReserva"
-        type="submit"
-        className={`mt-4 ${selectedCategory ? 'border-2 border-blue-500 hover:bg-blue-500 hover:text-white text-blue-500' : 'border-2 border-black'} font-bold py-2 px-4 rounded`}
-      >
-       {selectedCategory ? "Realizar Reserva" : "Seleccione una categoria "}
-      </button>
-            </form> 
-          </div>*/}
-          
-          
+          <div className="mt-10 flex justify-center text-black"></div>
+          <form className="text-black" onSubmit={handleSubmit}>
+
+<button
+  disabled={!selectedCategory}
+  id="btnRealizarReserva"
+  type="submit"
+  className={`mt-4 ${selectedCategory ? 'border-2 border-blue-500 hover:bg-blue-500 hover:text-white text-blue-500' : 'border-2 border-black'} font-bold py-2 px-4 rounded`}
+>
+{selectedCategory ? localStorage.getItem('access_token') ? "Realizar Reserva" : "Seleccione una categoria" : "Ingrese a su cuenta y seleccione una categoria"}
+</button>
+
+</form>
+</div>
         </div>
       </div>
-      <form clasName="text-black" onSubmit={handleSubmit}>
-
-      <button
-      className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium"
-      onClick={handleSubmit}
-    >
-      Logout
-    </button>
-  
-</form>
-
-    </div>
   );
 };
 

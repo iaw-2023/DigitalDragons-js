@@ -1,13 +1,26 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-
+import axios from 'axios';
 
 
 
 
 export default function MP() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const realizarReserva = async () => { 
+    const reservationData = localStorage.getItem('reservationData');
+    
+    try {
+      // Realizar la solicitud POST para registrar la reserva
+      const response = await axios.post(
+        'https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/reservas',
+        reservationData
+      );
+    } catch (error) {
+      console.error('Error al registrar la reserva:', error);
+    }
+  }
   useEffect(() => {
     
     
@@ -74,6 +87,7 @@ export default function MP() {
                   if (data.status == 'approved') {
                     title = 'Pago realizado con éxito';
                     icon = 'success';
+                    realizarReserva();
                   } else if (data.status == 'in_process') {
                     title = 'Pago pendiente';
                     icon = 'warning';
