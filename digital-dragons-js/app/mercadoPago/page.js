@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 
 export default function MP() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const realizarReserva = async () => { 
     const reservationData = localStorage.getItem('reservationData');
     
@@ -23,6 +23,7 @@ export default function MP() {
   }
 
   const router = useRouter();
+  //const { flightPrice } = router.query;
 
   useEffect(() => {
     
@@ -47,8 +48,12 @@ export default function MP() {
       
       
       const renderCardPaymentBrick = async (bricksBuilder) => {
-        const reservationData = localStorage.getItem('reservationData');
-        const precio = reservationData.data.precio;
+        
+        const reservationDataString = localStorage.getItem('reservationData');
+        const reservationData = JSON.parse(reservationDataString);
+        const precio = reservationData.precio;
+        
+        //const precio = reservationData.data.precio;
         const settings = {
           initialization: {
             amount: precio, // monto a ser pago

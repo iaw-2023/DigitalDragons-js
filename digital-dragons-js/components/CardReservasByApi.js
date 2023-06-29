@@ -1,32 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
-// import jwt_decode from 'jsonwebtoken';
-
 
 const CardReservasByApi = ({ userId }) => {
   const [reservas, setReservas] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const reservationsPerPage = 5;
   const pagesVisited = pageNumber * reservationsPerPage;
-  const accessToken = localStorage.getItem('access_token');
+  
 
   useEffect(() => {
     const fetchReservas = async () => {
       try {
-        const response = await axios.get(`https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/reservas`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        const response = await axios.get(`https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/reservas`);
         const allReservas = response.data;
 
-        // Filtrar las reservas por el cliente asociado al token
+        // Filtrar las reservas por id del cliente
         const filteredReservas = allReservas.filter(
-          (reserva) => reserva.cliente_id === getClienteIdFromToken(accessToken)
+          (reserva) => reserva.cliente_id === userId
         );
 
-        /*const updatedReservas = [];
+        const updatedReservas = [];
 
         for (const reserva of filteredReservas) {
           try {
@@ -55,15 +49,15 @@ const CardReservasByApi = ({ userId }) => {
             };
           })
         );
-        */
-        setReservas(filteredReservas);
+
+        setReservas(updatedReservasDatosAdicionales);
       } catch (error) {
         console.error('Error al obtener las reservas:', error);
       }
     };
 
     fetchReservas();
-  }, [accessToken]);
+  }, [userId]);
 
   if (reservas.length === 0) {
     return <div>
@@ -78,22 +72,6 @@ const CardReservasByApi = ({ userId }) => {
   };
 
   const displayedReservas = reservas.slice(pagesVisited, pagesVisited + reservationsPerPage);
-
-  // Función para obtener el ID del cliente desde el token
-  const getClienteIdFromToken = (token) => {
-    // Decodificar y extraer la información del token si es necesario
-    // Puedes utilizar librerías como jsonwebtoken para decodificar el token
-
-    try {
-      const decodedToken = jwt_decode(token);
-      const clienteId = decodedToken.clienteId;
-      return clienteId;
-    } catch (error) {
-      console.error('Error al decodificar el token:', error);
-      // Manejar el error adecuadamente, como devolver un valor predeterminado o mostrar un mensaje de error
-      return null;
-    }
-  };
 
   return (
     <div className="page-container bg-gray-100 min-h-screen">

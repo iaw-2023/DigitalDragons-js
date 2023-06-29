@@ -7,7 +7,7 @@ const AboutUsPage = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div className="py-8">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight text-center">
-            Somos Dragon Travels
+            Somos Digital Travels
           </h1>
           <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto text-center">
             Somos una compañía dedicada a brindar experiencias de vuelo únicas y memorables.
@@ -21,6 +21,8 @@ const AboutUsPage = () => {
                   src="https://i.ibb.co/kM8TT5V/Aldana-Daniela-Case.jpg"
                   alt="Foto de Aldana Daniela Casé"
                   className="w-12 h-12 rounded-full mr-4"
+                  width={100}
+                  height={100}
                 />
                 <div>
                   <h3 className="text-lg font-semibold mb-2">Aldana Daniela Casé</h3>
@@ -32,6 +34,8 @@ const AboutUsPage = () => {
                   src="https://i.ibb.co/028J5tv/Ger-nimo-Le-Lan-Toussaint-profile-image.jpg"
                   alt="Foto de Gerónimo Le Lan Toussaint"
                   className="w-12 h-12 rounded-full mr-4"
+                  width={100}
+                  height={100}
                 />
                 <div>
                   <h3 className="text-lg font-semibold mb-2">Gerónimo Le Lan Toussaint</h3>

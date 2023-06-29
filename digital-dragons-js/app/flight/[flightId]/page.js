@@ -111,7 +111,9 @@ const FlightPage = ({ params }) => {
         vuelo_id: flightId,
         cliente_id: clientId, // Utilizamos el ID del cliente obtenido de la API
       };
-      localStorage.setItem('reservationData', reservationData);
+      reservationData = JSON.stringify(reservationData);
+      console.log("hola"+reservationData);
+
 
       // try {
       //   // Realizar la solicitud POST para registrar la reserva
