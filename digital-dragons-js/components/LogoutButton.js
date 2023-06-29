@@ -17,7 +17,8 @@ const LogoutButton = () => {
       .then(data => {
         if (data.message === 'Logout exitoso') {
           localStorage.removeItem('access_token');
-          window.location.reload();
+          window.location.href = '/'; 
+
         } else {
           // Mostrar mensaje de error, etc.
         }

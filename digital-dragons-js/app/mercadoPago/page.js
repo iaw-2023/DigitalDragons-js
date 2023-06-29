@@ -10,18 +10,18 @@ export default function MP() {
   
   const realizarReserva = async () => { 
     const reservationData = localStorage.getItem('reservationData');
-    
-    try {
-      // Realizar la solicitud POST para registrar la reserva
-      const response = await axios.post(
-        'https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/reservas',
-        reservationData
-      );
-    } catch (error) {
-      console.error('Error al registrar la reserva:', error);
-    }
-  }
+const reservationDataObject = JSON.parse(reservationData);
 
+try {
+  // Realizar la solicitud POST para registrar la reserva
+  const response = await axios.post(
+    'https://digital-dragons-laravel-2rwz5slqh-digitaldragons.vercel.app/rest/reservas',
+    reservationDataObject
+  );
+} catch (error) {
+  console.error('Error al registrar la reserva:', error);
+}
+}
   const router = useRouter();
   //const { flightPrice } = router.query;
 
@@ -49,10 +49,14 @@ export default function MP() {
       
       const renderCardPaymentBrick = async (bricksBuilder) => {
         
-        const reservationDataString = localStorage.getItem('reservationData');
-        const reservationData = JSON.parse(reservationDataString);
-        const precio = reservationData.precio;
-        
+        const reservationData = localStorage.getItem('reservationData');
+        const reservationDataObject = JSON.parse(reservationData);
+
+        console.log(reservationDataObject);
+
+        const precio = reservationDataObject.precio;
+        console.log(precio);
+
         //const precio = reservationData.data.precio;
         const settings = {
           initialization: {

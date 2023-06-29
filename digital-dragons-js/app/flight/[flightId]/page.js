@@ -97,7 +97,8 @@ const FlightPage = ({ params }) => {
             },
           });
   
-          clientId = response.data.id;
+          clientId = response.data.cliente.id;
+          console.log(clientId);
         } catch (error) {
           console.error('Error fetching client data:', error);
         }
@@ -112,7 +113,9 @@ const FlightPage = ({ params }) => {
         cliente_id: clientId, // Utilizamos el ID del cliente obtenido de la API
       };
       reservationData = JSON.stringify(reservationData);
-      console.log("hola"+reservationData);
+      localStorage.setItem('reservationData', reservationData);
+      
+      
 
 
       // try {
@@ -272,12 +275,13 @@ const FlightPage = ({ params }) => {
           <form className="text-black" onSubmit={handleSubmit}>
 
 <button
-  disabled={!selectedCategory}
+  disabled={!selectedCategory || !localStorage.getItem('access_token')}
+
   id="btnRealizarReserva"
   type="submit"
-  className={`mt-4 ${selectedCategory ? 'border-2 border-blue-500 hover:bg-blue-500 hover:text-white text-blue-500' : 'border-2 border-black'} font-bold py-2 px-4 rounded`}
+  className={`mt-4 ${!(!selectedCategory || !localStorage.getItem('access_token')) ? 'border-2 border-blue-500 hover:bg-blue-500 hover:text-white text-blue-500' : 'border-2 border-black'} font-bold py-2 px-4 rounded`}
 >
-{selectedCategory ? localStorage.getItem('access_token') ? "Realizar Reserva" : "Seleccione una categoria" : "Ingrese a su cuenta y seleccione una categoria"}
+{selectedCategory ? localStorage.getItem('access_token') ? "Realizar Reserva" : "Ingrese a su cuenta y seleccione una categoria" : "Ingrese a su cuenta y seleccione una categoria"}
 </button>
 
 </form>
