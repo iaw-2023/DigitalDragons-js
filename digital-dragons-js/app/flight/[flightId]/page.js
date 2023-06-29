@@ -4,13 +4,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 
-//import Checkout from '../../../components/Checkout';
-//import FlightPageContent from '../../../components/FlightPageContent';
-
-
-
 const FlightPage = ({ params }) => {
-  //const navigate = useNavigate();
   const router = useRouter();
   const handlePaymentButtonClick = () => {
     router.push('/mercadoPago'); // Ruta a la página de pago
@@ -19,10 +13,8 @@ const FlightPage = ({ params }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showCheckout, setShowCheckout] = useState(false);
   const [flightData, setFlightData] = useState(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-  });
+
+  const [imageUrl, setImageUrl] = useState(null);
   const[flightPrice,setFlightPrice]=useState(0);
   //const [showCardPaymentForm, setShowCardPaymentForm] = useState(false);
 
@@ -34,11 +26,36 @@ const FlightPage = ({ params }) => {
         );
         const data = await response.json();
         setFlightData(data);
+        setImageUrl(getDestinationImage(data.destino));
+        
       } catch (error) {
         console.error('Error fetching flight data:', error);
       }
+     
     };
 
+    const getDestinationImage = async (destinationName) => {
+      try {
+        const url = `https://api.pexels.com/v1/search?query=${destinationName}%20landscape&format&per_page=1&orientation=landscape&size=small`;
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: 'PxIfeMofPj3AFuBQWrCGa1yJLQX9q7bKwuL8BFmInPzJZCNHDoaHXtE7',
+          },
+        });
+    
+        if (response.data && response.data.photos && response.data.photos.length > 0) {
+          const imageUrl = response.data.photos[0].src.medium;
+    
+          return imageUrl;
+        } else {
+          throw new Error('No se encontraron imágenes para el destino especificado.');
+        }
+      } catch (error) {
+        console.error('Error al obtener la imagen del destino:', error);
+        throw error;
+      }
+    };
+    
     /*const initMercadoPago = () => {
       const publicKey = 'TEST-4aab04bf-a4fb-4724-881f-53f0ffc5a971'; // Reemplaza con tu clave pública de sandbox
   
@@ -56,7 +73,7 @@ const FlightPage = ({ params }) => {
     fetchFlightData();
   }, [flightId]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => { 
     e.preventDefault();
     if(flightData.asientos_disponibles > 0){ 
       try {
@@ -88,12 +105,30 @@ const FlightPage = ({ params }) => {
         flightPrice = flightData.precio * 1.7;
       }
       
+      let clientId = '';
+      const accessToken = localStorage.getItem('access_token');
+      if (accessToken) {
+        try {
+          const response = await axios.get('https://digital-dragons-js-git-opcionales-y-obligatorios-digitaldragons.vercel.app/rest/cliente', {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+  
+          clientId = response.data.id;
+        } catch (error) {
+          console.error('Error fetching client data:', error);
+        }
+      }
+  
+      // Crear el objeto de reserva
+      // const flightPrice = calculateFlightPrice(selectedCategory, flightData.precio);
       const reservationData = {
         categoria: selectedCategory,
         numero_asiento: flightData.asientos_disponibles, // Completa con el número de asiento deseado
-        precio: flightPrice, 
+        precio: flightPrice,
         vuelo_id: flightId,
-        cliente_id: 1, // Completa con el ID del cliente
+        cliente_id: clientId, // Utilizamos el ID del cliente obtenido de la API
       };
 
       /*function initMercadoPago() {
@@ -185,10 +220,13 @@ const FlightPage = ({ params }) => {
   };
 
   const handleCategoryChange = (category) => {
+    let backgroundImageClass = imageUrl ? 'bg-cover bg-center h-full flex flex-col items-center justify-center with-background' : 'bg-cover bg-center h-full flex flex-col items-center justify-center';
+
     setSelectedCategory(category);
   };
 
   
+  let backgroundImageClass = imageUrl ? 'bg-cover bg-center h-full flex flex-col items-center justify-center with-background' : 'bg-cover bg-center h-full flex flex-col items-center justify-center';
 
   if (!flightData) {
     return <div className="page-container bg-gray-100 h-screen" >
@@ -200,13 +238,17 @@ const FlightPage = ({ params }) => {
   return (
     <div className="page-container bg-gray-100 h-screen">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-        <div className="py-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight text-center">
-            ¡Ya estás a un paso de {flightData.destino}!
-          </h1>
-          <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto text-center">
-            Selecciona la categoría de vuelo perfecta y haz de tu viaje una experiencia inolvidable
-          </p>
+        <div >
+        <div className={backgroundImageClass} style={{ backgroundImage: `url(${imageUrl})` }}>
+  <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight text-center text-black border-3 p-4">
+    ¡Ya estás a un paso de {flightData.destino}!
+  </h1>
+  <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto text-center text-white border-3 p-4">
+    Selecciona la categoría de vuelo perfecta y haz de tu viaje una experiencia inolvidable
+  </p>
+</div>
+
+
           <section className="landing-section center text-black mt-4">
             <h2 className="title__group"></h2>
             <table className="average-price-flights w-full border-collapse">
@@ -294,8 +336,8 @@ const FlightPage = ({ params }) => {
               </tbody>
             </table>
           </section>
-          <div className="mt-10 flex justify-center text-black">
-            <form className="w-80 bg-gray-200 p-4 rounded-lg" onSubmit={handleSubmit}>
+          {/*<div className="mt-10 flex justify-center text-black">
+             <form className="w-80 bg-gray-200 p-4 rounded-lg" onSubmit={handleSubmit}>
             <label htmlFor="name" className="block mb-2">
                   <span className="font-semibold">Nombre:</span>
                   <input
@@ -326,13 +368,23 @@ const FlightPage = ({ params }) => {
       >
        {selectedCategory ? "Realizar Reserva" : "Seleccione una categoria "}
       </button>
-            </form>
-          </div>
+            </form> 
+          </div>*/}
           
           
         </div>
       </div>
-      
+      <form clasName="text-black" onSubmit={handleSubmit}>
+
+      <button
+      className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium"
+      onClick={handleSubmit}
+    >
+      Logout
+    </button>
+  
+</form>
+
     </div>
   );
 };
