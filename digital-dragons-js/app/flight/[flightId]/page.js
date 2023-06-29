@@ -181,7 +181,7 @@ const FlightPage = ({ params }) => {
     ¡Ya estás a un paso de {flightData.destino}!
   </h1>
   <p className="mt-4 max-w-2xl text-xl text-black lg:mx-auto text-center border-3 p-4">
-  {imageUrl}
+  
     Selecciona la categoría de vuelo perfecta y haz de tu viaje una experiencia inolvidable
   </p>
 </div>
