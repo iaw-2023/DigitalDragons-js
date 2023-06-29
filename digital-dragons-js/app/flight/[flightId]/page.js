@@ -11,13 +11,13 @@ const FlightPage = ({ params }) => {
   };
   const { flightId } = params;
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [showCheckout, setShowCheckout] = useState(false);
+  
   const [flightData, setFlightData] = useState(null);
 
   const [imageUrl, setImageUrl] = useState(null);
   const[flightPrice,setFlightPrice]=useState(0);
   //const [showCardPaymentForm, setShowCardPaymentForm] = useState(false);
-
+  
   useEffect(() => {
     const fetchFlightData = async () => {
       try {
@@ -41,10 +41,11 @@ const FlightPage = ({ params }) => {
             Authorization: 'PxIfeMofPj3AFuBQWrCGa1yJLQX9q7bKwuL8BFmInPzJZCNHDoaHXtE7',
           },
         });
-    
+        
         if (response.data && response.data.photos && response.data.photos.length > 0) {
           const imageUrl = response.data.photos[0].src.medium;
-    
+
+          
           return imageUrl;
         } else {
           throw new Error('No se encontraron imágenes para el destino especificado.');
@@ -172,16 +173,19 @@ const FlightPage = ({ params }) => {
   return (
     <div className="page-container bg-gray-100 h-screen">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-        <div >
-        <div className={backgroundImageClass} style={{ backgroundImage: 'url(${imageUrl})' }}>
+        <div id="midiv" >
+        <div className={backgroundImageClass} style={{ backgroundImage: imageUrl }}>
+        
+
   <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight text-center text-black border-3 p-4">
     ¡Ya estás a un paso de {flightData.destino}!
   </h1>
   <p className="mt-4 max-w-2xl text-xl text-black lg:mx-auto text-center border-3 p-4">
-  ${imageUrl}
+  {imageUrl}
     Selecciona la categoría de vuelo perfecta y haz de tu viaje una experiencia inolvidable
   </p>
 </div>
+
 
 
           <section className="landing-section center text-black mt-4">
