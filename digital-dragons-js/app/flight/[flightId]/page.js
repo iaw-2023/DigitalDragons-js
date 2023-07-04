@@ -26,7 +26,7 @@ const FlightPage = ({ params }) => {
         );
         const data = await response.json();
         setFlightData(data);
-        setImageUrl(getDestinationImage(data.destino));
+        setImageUrl(await getDestinationImage(data.destino));
         
       } catch (error) {
         console.error('Error fetching flight data:', error);
@@ -43,10 +43,8 @@ const FlightPage = ({ params }) => {
         });
         
         if (response.data && response.data.photos && response.data.photos.length > 0) {
-          const imageUrl = response.data.photos[0].src.medium;
-
           
-          return imageUrl;
+          return response.data.photos[0].src.medium;
         } else {
           throw new Error('No se encontraron imágenes para el destino especificado.');
         }
@@ -55,7 +53,7 @@ const FlightPage = ({ params }) => {
         throw error;
       }
     };
-
+    
     fetchFlightData();
   }, [flightId]);
 
@@ -161,7 +159,9 @@ const FlightPage = ({ params }) => {
   };
 
   
-  let backgroundImageClass = imageUrl ? 'bg-cover bg-center h-full flex flex-col items-center justify-center with-background' : 'bg-cover bg-center h-full flex flex-col items-center justify-center';
+  let backgroundImageClass = imageUrl
+    ? 'bg-cover bg-center h-full flex flex-col items-center justify-center with-background'
+    : 'bg-cover bg-center h-full flex flex-col items-center justify-center';
 
   if (!flightData) {
     return <div className="page-container bg-gray-100 h-screen" >
@@ -174,18 +174,27 @@ const FlightPage = ({ params }) => {
     <div className="page-container bg-gray-100 h-screen">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div id="midiv" >
-        <div className={backgroundImageClass} style={{ backgroundImage: imageUrl }}>
+        <div className="{backgroundImageClass}" >
+          
+          
         
 
-  <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight text-center text-black border-3 p-4">
-    ¡Ya estás a un paso de {flightData.destino}!
-  </h1>
-  <p className="mt-4 max-w-2xl text-xl text-black lg:mx-auto text-center border-3 p-4">
-  
-    Selecciona la categoría de vuelo perfecta y haz de tu viaje una experiencia inolvidable
-  </p>
-</div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight text-center text-black border-3 p-4">
+            ¡Ya estás a un paso de {flightData.destino}!
+          </h1>
+          <p className="mt-4 max-w-2xl text-xl text-black lg:mx-auto text-center border-3 p-4">
+          
+          <img src={imageUrl} alt="Destino" style={{ width: '700px', height: 'auto' }} />
 
+          
+          
+
+          
+            Selecciona la categoría de vuelo perfecta y haz de tu viaje una experiencia inolvidable
+          </p>
+        </div>
+
+        
 
 
           <section className="landing-section center text-black mt-4">
