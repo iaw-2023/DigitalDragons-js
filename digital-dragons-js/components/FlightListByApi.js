@@ -93,8 +93,6 @@ const FlightListByApi = ({ origin, destination }) => {
               </div>
               <a
               href={`/flight/${flight.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
               className="border-2 border-blue-500 rounded-lg px-4 py-2 mt-4 hover:bg-blue-500 hover:text-white text-center"
             >
               Realizar reserva

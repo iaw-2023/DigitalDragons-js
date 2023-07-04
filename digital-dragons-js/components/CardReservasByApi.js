@@ -61,7 +61,9 @@ const CardReservasByApi = ({ userId }) => {
 
   if (reservas.length === 0) {
     return <div>
-      <h1>Cargando datos...</h1> 
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
+          Cargando ...
+      </h1>
       </div>;
   }
 
