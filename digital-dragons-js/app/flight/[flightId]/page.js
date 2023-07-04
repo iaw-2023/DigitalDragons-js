@@ -193,7 +193,7 @@ const FlightPage = ({ params }) => {
           
             Selecciona la categoría de vuelo perfecta y haz de tu viaje una experiencia inolvidable
           </p>
-        
+          </div>
 
 
           <section className="landing-section center text-black mt-4">
@@ -298,7 +298,7 @@ const FlightPage = ({ params }) => {
 
 </form>
 </div>
-</div>
+
         </div>
       </div>
   );
