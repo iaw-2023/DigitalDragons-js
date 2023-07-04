@@ -176,7 +176,11 @@ const FlightPage = ({ params }) => {
         <div id="midiv" >
         <div className="{backgroundImageClass}" >
           
-          
+        <div
+              className={backgroundImageClass}
+              style={{ backgroundImage: `url(${imageUrl})`,
+              }}
+            ></div>
         
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight text-center text-black border-3 p-4">
@@ -187,13 +191,8 @@ const FlightPage = ({ params }) => {
           <img src={imageUrl} alt="Destino" style={{ width: '700px', height: 'auto' }} />
 
           
-          
-
-          
             Selecciona la categoría de vuelo perfecta y haz de tu viaje una experiencia inolvidable
           </p>
-        </div>
-
         
 
 
@@ -298,6 +297,7 @@ const FlightPage = ({ params }) => {
 </button>
 
 </form>
+</div>
 </div>
         </div>
       </div>
