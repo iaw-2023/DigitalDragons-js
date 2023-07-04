@@ -174,7 +174,7 @@ const FlightPage = ({ params }) => {
     <div className="page-container bg-gray-100 h-screen">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div id="midiv" >
-        <div className="{backgroundImageClass}" >
+        <div className={backgroundImageClass} >
           
         <div
               className={backgroundImageClass}
