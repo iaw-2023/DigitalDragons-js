@@ -174,7 +174,7 @@ const FlightPage = ({ params }) => {
     <div className="page-container bg-gray-100 h-screen">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div id="midiv" >
-        <div className={backgroundImageClass} >
+        
           
         <div
               className={backgroundImageClass}
@@ -193,7 +193,7 @@ const FlightPage = ({ params }) => {
           
             Selecciona la categoría de vuelo perfecta y haz de tu viaje una experiencia inolvidable
           </p>
-          </div>
+          
 
 
           <section className="landing-section center text-black mt-4">
