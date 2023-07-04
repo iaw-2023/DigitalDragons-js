@@ -180,7 +180,7 @@ const FlightPage = ({ params }) => {
               className={backgroundImageClass}
               style={{ backgroundImage: `url(${imageUrl})`,
               }}
-            ></div>
+            >
         
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight text-center text-black border-3 p-4">
@@ -193,7 +193,7 @@ const FlightPage = ({ params }) => {
           
             Selecciona la categoría de vuelo perfecta y haz de tu viaje una experiencia inolvidable
           </p>
-          
+          </div>
 
 
           <section className="landing-section center text-black mt-4">
